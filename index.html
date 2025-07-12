@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیپر مارکنگ ایپ</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#006400">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        /* آپ کا CSS کوڈ یہاں ویسے ہی رہے گا جیسا پہلے تھا */
+        body {
+            font-family: 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #006400; /* Dark Green */
+        }
+        .controls, .marking-section, .results-section {
+            margin-bottom: 20px;
+        }
+        .class-selector, .student-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, input[type="text"], input[type="number"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 200px;
+            text-align: right;
+        }
+        .question-group {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+        }
+        legend {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #006400;
+        }
+        .part {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .part input {
+            width: 70px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .part .buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .part button {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .plus-btn { background-color: #28a745; }
+        .minus-btn { background-color: #dc3545; }
+        .total-marks {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .main-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .main-buttons button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            color: white;
+        }
+        #addStudentBtn { background-color: #007bff; }
+        #exportPdfBtn { background-color: #17a2b8; }
+        #shareWhatsAppBtn { background-color: #25D366; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #006400;
+            color: white;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- آپ کا HTML مواد یہاں ویسے ہی رہے گا -->
+    <div class="container">
+        <h1>پیپر مارکنگ ایپ</h1>
+
+        <div class="controls">
+            <div class="class-selector">
+                <label for="classSelect">کلاس منتخب کریں:</label>
+                <select id="classSelect">
+                    <option value="کلاس اول">کلاس اول</option>
+                    <option value="کلاس دوم">کلاس دوم</option>
+                    <option value="کلاس سوم">کلاس سوم</option>
+                    <option value="کلاس چہارم">کلاس چہارم</option>
+                    <option value="کلاس پنجم">کلاس پنجم</option>
+                    <option value="کلاس ششم">کلاس ششم</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="marking-section">
+            <h2>مارکنگ ایریا</h2>
+            <div class="student-info">
+                <label for="studentName">طالب علم کا نام/رول نمبر:</label>
+                <input type="text" id="studentName" placeholder="نام یا رول نمبر درج کریں">
+            </div>
+
+            <fieldset class="question-group">
+                <legend>سوال نمبر 1</legend>
+                <div class="part">
+                    <label>جز 1 (10 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q1p1', -0.5, 10)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q1p1', 0.5, 10)">+</button>
+                    </div>
+                    <input type="number" id="q1p1" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+                <div class="part">
+                    <label>جز 2 (10 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q1p2', -0.5, 10)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q1p2', 0.5, 10)">+</button>
+                    </div>
+                    <input type="number" id="q1p2" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+                <div class="part">
+                    <label>جز 3 (13 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q1p3', -0.5, 13)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q1p3', 0.5, 13)">+</button>
+                    </div>
+                    <input type="number" id="q1p3" min="0" max="13" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+            </fieldset>
+
+            <fieldset class="question-group">
+                <legend>سوال نمبر 2</legend>
+                <div class="part">
+                    <label>جز 1 (10 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q2p1', -0.5, 10)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q2p1', 0.5, 10)">+</button>
+                    </div>
+                    <input type="number" id="q2p1" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+                <div class="part">
+                    <label>جز 2 (10 نمبر)</label>
+                     <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q2p2', -0.5, 10)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q2p2', 0.5, 10)">+</button>
+                    </div>
+                    <input type="number" id="q2p2" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+                <div class="part">
+                    <label>جز 3 (13 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q2p3', -0.5, 13)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q2p3', 0.5, 13)">+</button>
+                    </div>
+                    <input type="number" id="q2p3" min="0" max="13" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+            </fieldset>
+
+            <fieldset class="question-group">
+                <legend>سوال نمبر 3</legend>
+                 <div class="part">
+                    <label>جز 1 (10 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q3p1', -0.5, 10)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q3p1', 0.5, 10)">+</button>
+                    </div>
+                    <input type="number" id="q3p1" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+                <div class="part">
+                    <label>جز 2 (10 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q3p2', -0.5, 10)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q3p2', 0.5, 10)">+</button>
+                    </div>
+                    <input type="number" id="q3p2" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+                <div class="part">
+                    <label>جز 3 (14 نمبر)</label>
+                    <div class="buttons">
+                        <button class="minus-btn" onclick="adjustMark('q3p3', -0.5, 14)">-</button>
+                        <button class="plus-btn" onclick="adjustMark('q3p3', 0.5, 14)">+</button>
+                    </div>
+                    <input type="number" id="q3p3" min="0" max="14" step="0.5" value="0" oninput="calculateTotal()">
+                </div>
+            </fieldset>
+            
+            <div class="total-marks">
+                کل نمبر: <span id="totalMarks">0</span> / 100
+            </div>
+
+            <div class="main-buttons">
+                <button id="addStudentBtn">طالب علم شامل کریں</button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsDiv">
+            <h2 id="resultClassName">نتائج</h2>
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>نام/رول نمبر</th>
+                        <th>سوال 1</th>
+                        <th>سوال 2</th>
+                        <th>سوال 3</th>
+                        <th>کل نمبر</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                    <!-- Results will be appended here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="main-buttons">
+            <button id="exportPdfBtn">PDF میں ایکسپورٹ کریں</button>
+            <button id="shareWhatsAppBtn">واٹس ایپ پر شیئر کریں</button>
+        </div>
+    </div>
+    
+    <script>
+        // آپ کا جاوا اسکرپٹ کوڈ یہاں ویسے ہی رہے گا
+        const partIds = ['q1p1', 'q1p2', 'q1p3', 'q2p1', 'q2p2', 'q2p3', 'q3p1', 'q3p2', 'q3p3'];
+
+        function adjustMark(inputId, delta, max) {
+            const input = document.getElementById(inputId);
+            let currentValue = parseFloat(input.value);
+            currentValue += delta;
+            if (currentValue < 0) currentValue = 0;
+            if (currentValue > max) currentValue = max;
+            input.value = currentValue;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            partIds.forEach(id => {
+                const input = document.getElementById(id);
+                if (input.value) {
+                    total += parseFloat(input.value);
+                }
+            });
+            document.getElementById('totalMarks').innerText = total;
+        }
+
+        document.getElementById('addStudentBtn').addEventListener('click', () => {
+            const studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                alert('براہ کرم طالب علم کا نام یا رول نمبر درج کریں۔');
+                return;
+            }
+
+            const q1 = parseFloat(document.getElementById('q1p1').value) + parseFloat(document.getElementById('q1p2').value) + parseFloat(document.getElementById('q1p3').value);
+            const q2 = parseFloat(document.getElementById('q2p1').value) + parseFloat(document.getElementById('q2p2').value) + parseFloat(document.getElementById('q2p3').value);
+            const q3 = parseFloat(document.getElementById('q3p1').value) + parseFloat(document.getElementById('q3p2').value) + parseFloat(document.getElementById('q3p3').value);
+            const total = q1 + q2 + q3;
+
+            const tableBody = document.getElementById('resultsBody');
+            const newRow = tableBody.insertRow();
+
+            newRow.innerHTML = `
+                <td>${studentName}</td>
+                <td>${q1}</td>
+                <td>${q2}</td>
+                <td>${q3}</td>
+                <td>${total}</td>
+            `;
+
+            // Reset fields
+            document.getElementById('studentName').value = '';
+            partIds.forEach(id => document.getElementById(id).value = 0);
+            calculateTotal();
+        });
+
+        document.getElementById('classSelect').addEventListener('change', function() {
+            document.getElementById('resultClassName').innerText = `نتائج برائے ${this.value}`;
+            document.getElementById('resultsBody').innerHTML = ''; // Clear table for new class
+        });
+
+        document.getElementById('exportPdfBtn').addEventListener('click', () => {
+            const resultsDiv = document.getElementById('resultsDiv');
+            const className = document.getElementById('classSelect').value;
+            const opt = {
+                margin:       1,
+                filename:     `${className}_نتائج.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(resultsDiv).set(opt).save();
+        });
+
+        document.getElementById('shareWhatsAppBtn').addEventListener('click', () => {
+            const table = document.getElementById('resultsTable');
+            const className = document.getElementById('classSelect').value;
+            let message = `*${className} کے نتائج*\n\n`;
+            message += `*نام | سوال 1 | سوال 2 | سوال 3 | کل نمبر*\n`;
+            message += `-------------------------------------\n`;
+
+            for (let i = 1; i < table.rows.length; i++) {
+                const row = table.rows[i];
+                const name = row.cells[0].innerText;
+                const q1 = row.cells[1].innerText;
+                const q2 = row.cells[2].innerText;
+                const q3 = row.cells[3].innerText;
+                const total = row.cells[4].innerText;
+                message += `${name} | ${q1} | ${q2} | ${q3} | *${total}*\n`;
+            }
+
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+        // Initial setup
+        document.getElementById('resultClassName').innerText = `نتائج برائے ${document.getElementById('classSelect').value}`;
+
+        // --- PWA Service Worker Registration ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registered with scope: ', registration.scope);
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
