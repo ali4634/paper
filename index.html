@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>
-        /* آپ کا CSS کوڈ یہاں ویسے ہی رہے گا جیسا پہلے تھا */
         body {
             font-family: 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
@@ -29,17 +28,14 @@
         }
         h1, h2 {
             text-align: center;
-            color: #006400; /* Dark Green */
+            color: #006400;
         }
-        .controls, .marking-section, .results-section {
-            margin-bottom: 20px;
-        }
-        .class-selector, .student-info {
+        .controls {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             align-items: center;
-            margin-bottom: 20px;
             flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         label {
             font-weight: bold;
@@ -100,6 +96,7 @@
             justify-content: center;
             gap: 15px;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
         .main-buttons button {
             padding: 12px 25px;
@@ -110,8 +107,11 @@
             color: white;
         }
         #addStudentBtn { background-color: #007bff; }
+        #saveResultsBtn { background-color: #28a745; }
+        #resetClassBtn { background-color: #ffc107; color: #333; }
         #exportPdfBtn { background-color: #17a2b8; }
         #shareWhatsAppBtn { background-color: #25D366; }
+        #deleteBtn { background-color: #dc3545; }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -133,12 +133,11 @@
 </head>
 <body>
 
-    <!-- آپ کا HTML مواد یہاں ویسے ہی رہے گا -->
     <div class="container">
         <h1>پیپر مارکنگ ایپ</h1>
 
         <div class="controls">
-            <div class="class-selector">
+            <div>
                 <label for="classSelect">کلاس منتخب کریں:</label>
                 <select id="classSelect">
                     <option value="کلاس اول">کلاس اول</option>
@@ -149,11 +148,16 @@
                     <option value="کلاس ششم">کلاس ششم</option>
                 </select>
             </div>
+             <div>
+                <label for="bookName">کتاب کا نام:</label>
+                <input type="text" id="bookName" placeholder="مثلاً: اردو، ریاضی">
+            </div>
         </div>
 
         <div class="marking-section">
+            <!-- مارکنگ ایریا ویسے ہی رہے گا -->
             <h2>مارکنگ ایریا</h2>
-            <div class="student-info">
+            <div class="student-info" style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
                 <label for="studentName">طالب علم کا نام/رول نمبر:</label>
                 <input type="text" id="studentName" placeholder="نام یا رول نمبر درج کریں">
             </div>
@@ -162,54 +166,36 @@
                 <legend>سوال نمبر 1</legend>
                 <div class="part">
                     <label>جز 1 (10 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q1p1', -0.5, 10)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q1p1', 0.5, 10)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q1p1', -0.5, 10)">-</button><button class="plus-btn" onclick="adjustMark('q1p1', 0.5, 10)">+</button></div>
                     <input type="number" id="q1p1" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
                 <div class="part">
                     <label>جز 2 (10 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q1p2', -0.5, 10)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q1p2', 0.5, 10)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q1p2', -0.5, 10)">-</button><button class="plus-btn" onclick="adjustMark('q1p2', 0.5, 10)">+</button></div>
                     <input type="number" id="q1p2" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
                 <div class="part">
                     <label>جز 3 (13 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q1p3', -0.5, 13)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q1p3', 0.5, 13)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q1p3', -0.5, 13)">-</button><button class="plus-btn" onclick="adjustMark('q1p3', 0.5, 13)">+</button></div>
                     <input type="number" id="q1p3" min="0" max="13" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
             </fieldset>
 
             <fieldset class="question-group">
                 <legend>سوال نمبر 2</legend>
-                <div class="part">
+                 <div class="part">
                     <label>جز 1 (10 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q2p1', -0.5, 10)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q2p1', 0.5, 10)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q2p1', -0.5, 10)">-</button><button class="plus-btn" onclick="adjustMark('q2p1', 0.5, 10)">+</button></div>
                     <input type="number" id="q2p1" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
                 <div class="part">
                     <label>جز 2 (10 نمبر)</label>
-                     <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q2p2', -0.5, 10)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q2p2', 0.5, 10)">+</button>
-                    </div>
+                     <div class="buttons"><button class="minus-btn" onclick="adjustMark('q2p2', -0.5, 10)">-</button><button class="plus-btn" onclick="adjustMark('q2p2', 0.5, 10)">+</button></div>
                     <input type="number" id="q2p2" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
                 <div class="part">
                     <label>جز 3 (13 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q2p3', -0.5, 13)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q2p3', 0.5, 13)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q2p3', -0.5, 13)">-</button><button class="plus-btn" onclick="adjustMark('q2p3', 0.5, 13)">+</button></div>
                     <input type="number" id="q2p3" min="0" max="13" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
             </fieldset>
@@ -218,26 +204,17 @@
                 <legend>سوال نمبر 3</legend>
                  <div class="part">
                     <label>جز 1 (10 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q3p1', -0.5, 10)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q3p1', 0.5, 10)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q3p1', -0.5, 10)">-</button><button class="plus-btn" onclick="adjustMark('q3p1', 0.5, 10)">+</button></div>
                     <input type="number" id="q3p1" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
                 <div class="part">
                     <label>جز 2 (10 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q3p2', -0.5, 10)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q3p2', 0.5, 10)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q3p2', -0.5, 10)">-</button><button class="plus-btn" onclick="adjustMark('q3p2', 0.5, 10)">+</button></div>
                     <input type="number" id="q3p2" min="0" max="10" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
                 <div class="part">
                     <label>جز 3 (14 نمبر)</label>
-                    <div class="buttons">
-                        <button class="minus-btn" onclick="adjustMark('q3p3', -0.5, 14)">-</button>
-                        <button class="plus-btn" onclick="adjustMark('q3p3', 0.5, 14)">+</button>
-                    </div>
+                    <div class="buttons"><button class="minus-btn" onclick="adjustMark('q3p3', -0.5, 14)">-</button><button class="plus-btn" onclick="adjustMark('q3p3', 0.5, 14)">+</button></div>
                     <input type="number" id="q3p3" min="0" max="14" step="0.5" value="0" oninput="calculateTotal()">
                 </div>
             </fieldset>
@@ -261,6 +238,7 @@
                         <th>سوال 2</th>
                         <th>سوال 3</th>
                         <th>کل نمبر</th>
+                        <th>عمل</th>
                     </tr>
                 </thead>
                 <tbody id="resultsBody">
@@ -270,14 +248,19 @@
         </div>
 
         <div class="main-buttons">
+            <button id="saveResultsBtn">نتائج محفوظ کریں</button>
             <button id="exportPdfBtn">PDF میں ایکسپورٹ کریں</button>
             <button id="shareWhatsAppBtn">واٹس ایپ پر شیئر کریں</button>
+            <button id="resetClassBtn">کلاس ری سیٹ کریں</button>
         </div>
     </div>
     
     <script>
-        // آپ کا جاوا اسکرپٹ کوڈ یہاں ویسے ہی رہے گا
         const partIds = ['q1p1', 'q1p2', 'q1p3', 'q2p1', 'q2p2', 'q2p3', 'q3p1', 'q3p2', 'q3p3'];
+        const classSelect = document.getElementById('classSelect');
+        const bookNameInput = document.getElementById('bookName');
+        const resultsBody = document.getElementById('resultsBody');
+        const resultClassName = document.getElementById('resultClassName');
 
         function adjustMark(inputId, delta, max) {
             const input = document.getElementById(inputId);
@@ -293,11 +276,28 @@
             let total = 0;
             partIds.forEach(id => {
                 const input = document.getElementById(id);
-                if (input.value) {
-                    total += parseFloat(input.value);
-                }
+                if (input.value) total += parseFloat(input.value);
             });
             document.getElementById('totalMarks').innerText = total;
+        }
+        
+        function addStudentToTable(student) {
+            const newRow = resultsBody.insertRow();
+            newRow.innerHTML = `
+                <td>${student.name}</td>
+                <td>${student.q1}</td>
+                <td>${student.q2}</td>
+                <td>${student.q3}</td>
+                <td><b>${student.total}</b></td>
+                <td><button id="deleteBtn" onclick="deleteStudent(this)">حذف کریں</button></td>
+            `;
+        }
+        
+        function resetMarkingFields() {
+            document.getElementById('studentName').value = '';
+            partIds.forEach(id => document.getElementById(id).value = 0);
+            calculateTotal();
+            document.getElementById('studentName').focus();
         }
 
         document.getElementById('addStudentBtn').addEventListener('click', () => {
@@ -307,39 +307,95 @@
                 return;
             }
 
-            const q1 = parseFloat(document.getElementById('q1p1').value) + parseFloat(document.getElementById('q1p2').value) + parseFloat(document.getElementById('q1p3').value);
-            const q2 = parseFloat(document.getElementById('q2p1').value) + parseFloat(document.getElementById('q2p2').value) + parseFloat(document.getElementById('q2p3').value);
-            const q3 = parseFloat(document.getElementById('q3p1').value) + parseFloat(document.getElementById('q3p2').value) + parseFloat(document.getElementById('q3p3').value);
-            const total = q1 + q2 + q3;
+            const studentData = {
+                name: studentName,
+                q1: parseFloat(document.getElementById('q1p1').value) + parseFloat(document.getElementById('q1p2').value) + parseFloat(document.getElementById('q1p3').value),
+                q2: parseFloat(document.getElementById('q2p1').value) + parseFloat(document.getElementById('q2p2').value) + parseFloat(document.getElementById('q2p3').value),
+                q3: parseFloat(document.getElementById('q3p1').value) + parseFloat(document.getElementById('q3p2').value) + parseFloat(document.getElementById('q3p3').value)
+            };
+            studentData.total = studentData.q1 + studentData.q2 + studentData.q3;
 
-            const tableBody = document.getElementById('resultsBody');
-            const newRow = tableBody.insertRow();
-
-            newRow.innerHTML = `
-                <td>${studentName}</td>
-                <td>${q1}</td>
-                <td>${q2}</td>
-                <td>${q3}</td>
-                <td>${total}</td>
-            `;
-
-            // Reset fields
-            document.getElementById('studentName').value = '';
-            partIds.forEach(id => document.getElementById(id).value = 0);
-            calculateTotal();
+            addStudentToTable(studentData);
+            resetMarkingFields();
         });
 
-        document.getElementById('classSelect').addEventListener('change', function() {
-            document.getElementById('resultClassName').innerText = `نتائج برائے ${this.value}`;
-            document.getElementById('resultsBody').innerHTML = ''; // Clear table for new class
+        function deleteStudent(button) {
+            if (confirm('کیا آپ واقعی اس طالب علم کو حذف کرنا چاہتے ہیں؟')) {
+                const row = button.parentElement.parentElement;
+                row.remove();
+            }
+        }
+        
+        // --- ڈیٹا کو محفوظ اور لوڈ کرنے کے فنکشنز ---
+
+        function saveResults() {
+            const currentClass = classSelect.value;
+            const currentBook = bookNameInput.value;
+            const rows = resultsBody.querySelectorAll('tr');
+            const dataToSave = {
+                bookName: currentBook,
+                students: []
+            };
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const studentData = {
+                    name: cells[0].innerText,
+                    q1: cells[1].innerText,
+                    q2: cells[2].innerText,
+                    q3: cells[3].innerText,
+                    total: cells[4].innerText.replace(/<[^>]*>?/gm, '') // b tag ko hatane ke liye
+                };
+                dataToSave.students.push(studentData);
+            });
+
+            localStorage.setItem(`results_${currentClass}`, JSON.stringify(dataToSave));
+            alert(`'${currentClass}' کے نتائج محفوظ کر لیے گئے ہیں۔`);
+        }
+
+        function loadResults() {
+            const currentClass = classSelect.value;
+            resultClassName.innerText = `نتائج برائے ${currentClass}`;
+            resultsBody.innerHTML = ''; // پرانا ٹیبل صاف کریں
+
+            const savedData = localStorage.getItem(`results_${currentClass}`);
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                bookNameInput.value = data.bookName || '';
+                data.students.forEach(student => addStudentToTable(student));
+            } else {
+                bookNameInput.value = ''; // اگر کوئی ڈیٹا نہیں تو کتاب کا نام خالی کر دیں
+            }
+        }
+        
+        document.getElementById('saveResultsBtn').addEventListener('click', saveResults);
+
+        document.getElementById('resetClassBtn').addEventListener('click', () => {
+            const currentClass = classSelect.value;
+            if (confirm(`کیا آپ واقعی '${currentClass}' کا تمام رزلٹ حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں کیا جا سکتا۔`)) {
+                resultsBody.innerHTML = '';
+                bookNameInput.value = '';
+                localStorage.removeItem(`results_${currentClass}`);
+                alert(`'${currentClass}' کا رزلٹ حذف کر دیا گیا ہے۔`);
+            }
         });
 
+        classSelect.addEventListener('change', loadResults);
+        
+        // --- ایکسپورٹ اور شیئر کے فنکشنز ---
+        
         document.getElementById('exportPdfBtn').addEventListener('click', () => {
-            const resultsDiv = document.getElementById('resultsDiv');
-            const className = document.getElementById('classSelect').value;
+            const resultsDiv = document.getElementById('resultsDiv').cloneNode(true);
+            // PDF se 'عمل' column hatayein
+            resultsDiv.querySelectorAll('th:last-child, td:last-child').forEach(el => el.remove());
+            
+            const className = classSelect.value;
+            const bookName = bookNameInput.value;
+            resultsDiv.querySelector('h2').innerText = `نتائج برائے ${className} - ${bookName}`;
+            
             const opt = {
-                margin:       1,
-                filename:     `${className}_نتائج.pdf`,
+                margin:       0.5,
+                filename:     `${className}_${bookName}_نتائج.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -348,38 +404,41 @@
         });
 
         document.getElementById('shareWhatsAppBtn').addEventListener('click', () => {
-            const table = document.getElementById('resultsTable');
-            const className = document.getElementById('classSelect').value;
-            let message = `*${className} کے نتائج*\n\n`;
-            message += `*نام | سوال 1 | سوال 2 | سوال 3 | کل نمبر*\n`;
-            message += `-------------------------------------\n`;
+            const className = classSelect.value;
+            const bookName = bookNameInput.value;
+            let message = `*نتائج برائے ${className}*\n`;
+            if(bookName) message += `*مضمون: ${bookName}*\n\n`;
+            
+            message += `*نام | س1 | س2 | س3 | کل نمبر*\n`;
+            message += `--------------------------------\n`;
 
-            for (let i = 1; i < table.rows.length; i++) {
-                const row = table.rows[i];
-                const name = row.cells[0].innerText;
-                const q1 = row.cells[1].innerText;
-                const q2 = row.cells[2].innerText;
-                const q3 = row.cells[3].innerText;
-                const total = row.cells[4].innerText;
+            const rows = resultsBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0].innerText;
+                const q1 = cells[1].innerText;
+                const q2 = cells[2].innerText;
+                const q3 = cells[3].innerText;
+                const total = cells[4].innerText.replace(/<[^>]*>?/gm, '');
                 message += `${name} | ${q1} | ${q2} | ${q3} | *${total}*\n`;
-            }
+            });
 
             const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         });
 
-        // Initial setup
-        document.getElementById('resultClassName').innerText = `نتائج برائے ${document.getElementById('classSelect').value}`;
-
         // --- PWA Service Worker Registration ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
+                loadResults(); // صفحہ لوڈ ہوتے ہی رزلٹ لوڈ کریں
+                navigator.serviceWorker.register('sw.js').then(registration => {
                     console.log('ServiceWorker registered with scope: ', registration.scope);
                 }).catch(err => {
                     console.log('ServiceWorker registration failed: ', err);
                 });
             });
+        } else {
+             window.addEventListener('load', loadResults);
         }
     </script>
 </body>
