@@ -1,13 +1,13 @@
-const CACHE_NAME = 'paper-marking-app-cache-v1';
+const CACHE_NAME = 'paper-marking-app-cache-v2'; // ورژن نمبر بڑھا دیں
+
 const urlsToCache = [
   '/',
   'index.html',
   'manifest.json',
   'icons/icon-192x192.png',
-  'icons/icon-512x512.png'
-  // اگر آپ نے CSS یا JS کی الگ فائل بنائی ہے تو اسے یہاں شامل کریں۔
+  'icons/icon-512x512.png',
+  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js' // <-- یہ لائن شامل کی گئی ہے
 ];
-
 // انسٹالیشن کے دوران کیشنگ
 self.addEventListener('install', event => {
   event.waitUntil(
