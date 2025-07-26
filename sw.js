@@ -1,15 +1,15 @@
- // service-worker.js
+// sw.js
 
-// ورژن نمبر بڑھائیں تاکہ سروس ورکر اپ ڈیٹ ہو
-const CACHE_NAME = 'paper-marking-app-cache-v4';
+// نیا ورژن نمبر تاکہ براؤزر اپ ڈیٹ کو پہچانے
+const CACHE_NAME = 'paper-marking-app-cache-v6';
 
+// صرف وہی فائلیں شامل کی گئی ہیں جو آپ کے پروجیکٹ میں موجود ہیں
 const urlsToCache = [
   '/',
-  'index.html', // <-- یہ فائل فال بیک کے لیے بہت اہم ہے
+  'index.html',
   'manifest.json',
   'icons/icon-192x192.png',
-  'icons/icon-512x512.png',
-  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js'
+  'icons/icon-512x512.png'
 ];
 
 // --- انسٹالیشن کا مرحلہ ---
@@ -17,7 +17,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
+        console.log('Cache opened, adding core assets.');
         return cache.addAll(urlsToCache);
       })
       .then(() => self.skipWaiting())
@@ -25,6 +25,7 @@ self.addEventListener('install', event => {
 });
 
 // --- ایکٹیویشن کا مرحلہ ---
+// پرانے کیشے کو صاف کرتا ہے
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -40,39 +41,22 @@ self.addEventListener('activate', event => {
   );
 });
 
-// --- فیچ (Fetch) کا مرحلہ (حتمی ورژن) ---
+// --- فیچ (Fetch) کا مرحلہ (Cache First حکمت عملی) ---
 self.addEventListener('fetch', event => {
-  // اگر یہ صفحہ ریفریش کرنے کی درخواست ہے (navigation request)
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          // اگر آن لائن ہیں تو نیٹ ورک سے جواب دیں
-          return response;
-        })
-        .catch(() => {
-          // اگر آف لائن ہیں، تو کیشے سے মূল HTML فائل واپس کریں
-          return caches.match('index.html');
-        })
-    );
-    return; // یہاں رک جائیں
-  }
-
-  // باقی تمام درخواستوں کے لیے (CSS, JS, تصاویر, وغیرہ)
   event.respondWith(
-    fetch(event.request)
-      .then(networkResponse => {
-        // نیٹ ورک سے جواب ملا، اسے کیشے میں محفوظ کریں
-        return caches.open(CACHE_NAME).then(cache => {
-          if (networkResponse.ok) {
-            cache.put(event.request, networkResponse.clone());
-          }
-          return networkResponse;
-        });
-      })
-      .catch(() => {
-        // نیٹ ورک ناکام، کیشے سے جواب تلاش کریں
-        return caches.match(event.request);
+    // پہلے کیشے میں تلاش کریں
+    caches.match(event.request)
+      .then(cachedResponse => {
+        // اگر کیشے میں ہے تو اسے واپس کریں
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        // اگر کیشے میں نہیں ہے، تو نیٹ ورک پر جائیں
+        return fetch(event.request);
+        // چونکہ آپ کی ایپ میں کوئی متحرک مواد نہیں ہے،
+        // اس لیے نیٹ ورک سے آئی چیزوں کو دوبارہ کیشے کرنے کی ضرورت نہیں ہے۔
+        // یہ کوڈ کو سادہ اور تیز رکھتا ہے۔
       })
   );
 });
