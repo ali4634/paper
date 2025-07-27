@@ -1,48 +1,41 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پیپر مارکنگ ایپ</title>
     
-    <!-- PWA: مینی فیسٹ فائل کا درست اور مکمل پاتھ -->
-    <link rel="manifest" href="/paper/manifest.json">
-    <meta name="theme-color" content="#3a3a3a">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#006400">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <style>
-        /* --- آنکھوں کے لیے آرام دہ گرے تھیم --- */
         body {
             font-family: 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #212121;
-            color: #e0e0e0;
+            background-color: #f4f7f6;
+            color: #333;
             margin: 0;
-            padding: 10px;
+            padding: 20px;
         }
         .container {
             max-width: 1000px;
             margin: auto;
-            background: #2c2c2c;
-            padding: 15px;
+            background: #fff;
+            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            border: 1px solid #444;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
         h1, h2 {
             text-align: center;
-            color: #66bb6a;
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
+            color: #006400;
         }
         .controls {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             align-items: center;
             flex-wrap: wrap;
             margin-bottom: 20px;
-            padding: 10px;
-            background: #3a3a3a;
-            border-radius: 5px;
         }
         label {
             font-weight: bold;
@@ -50,24 +43,21 @@
         select, input[type="text"], input[type="number"] {
             padding: 8px;
             border-radius: 5px;
-            border: 1px solid #555;
-            background-color: #424242;
-            color: #e0e0e0;
-            width: 180px;
+            border: 1px solid #ccc;
+            width: 200px;
             text-align: right;
         }
         .question-group {
-            border: 1px solid #444;
+            border: 1px solid #ddd;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            background-color: #3a3a3a;
+            background-color: #fafafa;
         }
         legend {
             font-weight: bold;
             font-size: 1.2em;
-            color: #81c784;
-            padding: 0 10px;
+            color: #006400;
         }
         .part {
             display: flex;
@@ -85,64 +75,59 @@
             gap: 5px;
         }
         .part button {
-            width: 35px;
-            height: 35px;
-            font-size: 1.4em;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5em;
             cursor: pointer;
             border: none;
             color: #fff;
             border-radius: 5px;
-            line-height: 35px;
         }
-        .plus-btn { background-color: #2e7d32; }
-        .minus-btn { background-color: #c62828; }
+        .plus-btn { background-color: #28a745; }
+        .minus-btn { background-color: #dc3545; }
         .total-marks {
             text-align: center;
             font-size: 1.5em;
             font-weight: bold;
             margin-top: 20px;
-            background-color: #424242;
-            padding: 10px;
-            border-radius: 5px;
         }
         .main-buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             margin: 20px 0;
             flex-wrap: wrap;
         }
         .main-buttons button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 1.1em;
             cursor: pointer;
             border-radius: 5px;
             border: none;
             color: white;
-            font-weight: bold;
         }
-        #addStudentBtn { background-color: #0277bd; }
-        #saveResultsBtn { background-color: #388e3c; }
-        #resetClassBtn { background-color: #f9a825; color: #212121; }
-        #exportPdfBtn { background-color: #00838f; }
-        #shareWhatsAppBtn { background-color: #1e88e5; }
-        #deleteBtn { background-color: #c62828; padding: 5px 10px !important; font-size: 0.9em !important; }
+        #addStudentBtn { background-color: #007bff; }
+        #saveResultsBtn { background-color: #28a745; }
+        #resetClassBtn { background-color: #ffc107; color: #333; }
+        #exportPdfBtn { background-color: #17a2b8; }
+        #shareWhatsAppBtn { background-color: #25D366; }
+        #deleteBtn { background-color: #dc3545; }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
         th, td {
-            border: 1px solid #444;
-            padding: 10px;
+            border: 1px solid #ddd;
+            padding: 12px;
             text-align: center;
         }
         th {
-            background-color: #004d40;
+            background-color: #006400;
             color: white;
         }
         tbody tr:nth-child(even) {
-            background-color: #373737;
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -170,6 +155,7 @@
         </div>
 
         <div class="marking-section">
+            <!-- مارکنگ ایریا ویسے ہی رہے گا -->
             <h2>مارکنگ ایریا</h2>
             <div class="student-info" style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
                 <label for="studentName">طالب علم کا نام/رول نمبر:</label>
@@ -340,6 +326,8 @@
             }
         }
         
+        // --- ڈیٹا کو محفوظ اور لوڈ کرنے کے فنکشنز ---
+
         function saveResults() {
             const currentClass = classSelect.value;
             const currentBook = bookNameInput.value;
@@ -356,7 +344,7 @@
                     q1: cells[1].innerText,
                     q2: cells[2].innerText,
                     q3: cells[3].innerText,
-                    total: cells[4].innerText.replace(/<[^>]*>?/gm, '')
+                    total: cells[4].innerText.replace(/<[^>]*>?/gm, '') // b tag ko hatane ke liye
                 };
                 dataToSave.students.push(studentData);
             });
@@ -368,7 +356,7 @@
         function loadResults() {
             const currentClass = classSelect.value;
             resultClassName.innerText = `نتائج برائے ${currentClass}`;
-            resultsBody.innerHTML = ''; 
+            resultsBody.innerHTML = ''; // پرانا ٹیبل صاف کریں
 
             const savedData = localStorage.getItem(`results_${currentClass}`);
             if (savedData) {
@@ -376,7 +364,7 @@
                 bookNameInput.value = data.bookName || '';
                 data.students.forEach(student => addStudentToTable(student));
             } else {
-                bookNameInput.value = '';
+                bookNameInput.value = ''; // اگر کوئی ڈیٹا نہیں تو کتاب کا نام خالی کر دیں
             }
         }
         
@@ -394,8 +382,11 @@
 
         classSelect.addEventListener('change', loadResults);
         
+        // --- ایکسپورٹ اور شیئر کے فنکشنز ---
+        
         document.getElementById('exportPdfBtn').addEventListener('click', () => {
             const resultsDiv = document.getElementById('resultsDiv').cloneNode(true);
+            // PDF se 'عمل' column hatayein
             resultsDiv.querySelectorAll('th:last-child, td:last-child').forEach(el => el.remove());
             
             const className = classSelect.value;
@@ -436,11 +427,11 @@
             window.open(whatsappUrl, '_blank');
         });
 
-        // PWA Service Worker Registration
+        // --- PWA Service Worker Registration ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                loadResults();
-                navigator.serviceWorker.register('/paper/sw.js').then(registration => {
+                loadResults(); // صفحہ لوڈ ہوتے ہی رزلٹ لوڈ کریں
+                navigator.serviceWorker.register('sw.js').then(registration => {
                     console.log('ServiceWorker registered with scope: ', registration.scope);
                 }).catch(err => {
                     console.log('ServiceWorker registration failed: ', err);
