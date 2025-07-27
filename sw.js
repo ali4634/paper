@@ -1,4 +1,4 @@
-const staticCacheName = 'paper-app-static-v2'; // ورژن بدل دیا ہے
+const staticCacheName = 'paper-app-static-v3'; // ورژن پھر سے بدل دیا ہے
 
 const assets = [
   '/paper/',
