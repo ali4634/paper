@@ -1,4 +1,4 @@
-const staticCacheName = 'paper-app-static-v3'; // ورژن پھر سے بدل دیا ہے
+const staticCacheName = 'paper-marking-app-v1'; // نیا ورژن
 
 const assets = [
   '/paper/',
@@ -9,15 +9,17 @@ const assets = [
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js'
 ];
 
+// انسٹال ایونٹ
 self.addEventListener('install', evt => {
   evt.waitUntil(
     caches.open(staticCacheName).then(cache => {
-      console.log('caching shell assets for paper app');
+      console.log('caching shell assets');
       return cache.addAll(assets);
     })
   );
 });
 
+// ایکٹیویٹ ایونٹ
 self.addEventListener('activate', evt => {
   evt.waitUntil(
     caches.keys().then(keys => {
@@ -29,6 +31,7 @@ self.addEventListener('activate', evt => {
   );
 });
 
+// فیچ ایونٹ
 self.addEventListener('fetch', evt => {
   evt.respondWith(
     caches.match(evt.request).then(cacheRes => {
