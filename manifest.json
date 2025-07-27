@@ -1,21 +1,21 @@
 {
-  "name": "پیپر مارکنگ ایپ",
-  "short_name": "مارکنگ ایپ",
+  "name": "Paper App",
+  "short_name": "Paper",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#006400",
-  "description": "اساتذہ کے لیے پیپر مارکنگ کی ایک آسان ایپ",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
     },
     {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ]
 }
