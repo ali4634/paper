@@ -1,6 +1,5 @@
- const staticCacheName = 'paper-app-static-v1';
+const staticCacheName = 'paper-app-static-v2'; // ورژن بدل دیا ہے
 
-// آپ کی تمام ضروری فائلیں
 const assets = [
   '/paper/',
   '/paper/index.html',
@@ -10,7 +9,6 @@ const assets = [
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js'
 ];
 
-// انسٹال ایونٹ
 self.addEventListener('install', evt => {
   evt.waitUntil(
     caches.open(staticCacheName).then(cache => {
@@ -20,7 +18,6 @@ self.addEventListener('install', evt => {
   );
 });
 
-// ایکٹیویٹ ایونٹ
 self.addEventListener('activate', evt => {
   evt.waitUntil(
     caches.keys().then(keys => {
@@ -32,11 +29,10 @@ self.addEventListener('activate', evt => {
   );
 });
 
-// فیچ ایونٹ
 self.addEventListener('fetch', evt => {
   evt.respondWith(
     caches.match(evt.request).then(cacheRes => {
       return cacheRes || fetch(evt.request);
     })
   );
-});۔
+});
