@@ -3,7 +3,7 @@
   "short_name": "مارکنگ ایپ",
   "start_url": "/paper/",
   "display": "standalone",
-  "background_color": "#f4f7f6",
+  "background_color": "#212121",
   "theme_color": "#3a3a3a",
   "orientation": "any",
   "scope": "/paper/",
