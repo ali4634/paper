@@ -1,44 +1,47 @@
-// پیپر ایپ کے لیے کیش کا نیا نام اور ورژن
-const staticCacheName = 'paper-app-static-v4'; // ورژن بدل دیا ہے
+ const CACHE_NAME = 'paper-app-cache-v1'; // نیا ورژن
+const REPO_NAME = '/paper/'; // آپ کی ریپوزٹری کا نام
 
-// آپ کی paper ریپوزٹری کی تمام ضروری فائلیں (بیرونی اسکرپٹ کے ساتھ)
-const assets = [
-  '/paper/',
-  '/paper/index.html',
-  '/paper/manifest.json',
-  '/paper/icons/icon-192.png',
-  '/paper/icons/icon-512.png',
+// آپ کی paper ریپوزٹری کی تمام ضروری فائلیں
+const URLS_TO_CACHE = [
+  REPO_NAME,
+  REPO_NAME + 'index.html',
+  REPO_NAME + 'manifest.json',
+  REPO_NAME + 'icons/icon-192.png',  // <-- icons کا فولڈر شامل کیا
+  REPO_NAME + 'icons/icon-512.png',  // <-- icons کا فولڈر شامل کیا
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js'
 ];
 
-// انسٹال ایونٹ: سروس ورکر انسٹال ہوتے وقت ان فائلوں کو کیش کرتا ہے
-self.addEventListener('install', evt => {
-  evt.waitUntil(
-    caches.open(staticCacheName).then(cache => {
-      console.log('caching assets for paper app');
-      return cache.addAll(assets);
-    })
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache for paper app');
+        return cache.addAll(URLS_TO_CACHE);
+      })
   );
 });
 
-// ایکٹیویٹ ایونٹ: پرانے کیش کو صاف کرتا ہے
-self.addEventListener('activate', evt => {
-  evt.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(keys
-        .filter(key => key !== staticCacheName)
-        .map(key => caches.delete(key))
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // اگر کیش میں ہے تو وہیں سے دو، ورنہ نیٹ ورک سے لاؤ
+        return response || fetch(event.request);
+      })
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
       );
-    })
-  );
-});
-
-// فیچ ایونٹ: آف لائن ہونے پر کیش سے جواب دیتا ہے
-self.addEventListener('fetch', evt => {
-  evt.respondWith(
-    caches.match(evt.request).then(cacheRes => {
-      // اگر فائل کیش میں ہے تو وہیں سے دے دو، ورنہ انٹرنیٹ سے لانے کی کوشش کرو
-      return cacheRes || fetch(evt.request);
     })
   );
 });
