@@ -1,62 +1,43 @@
-// sw.js
+// کیش کا نیا اور صاف ورژن
+const staticCacheName = 'paper-static-v1';
 
-// نیا ورژن نمبر تاکہ براؤزر اپ ڈیٹ کو پہچانے
-const CACHE_NAME = 'paper-marking-app-cache-v6';
-
-// صرف وہی فائلیں شامل کی گئی ہیں جو آپ کے پروجیکٹ میں موجود ہیں
-const urlsToCache = [
+// صرف وہ فائلیں جو آپ کی ریپوزٹری میں حقیقت میں موجود ہیں
+const assets = [
   '/',
   'index.html',
   'manifest.json',
-  'icons/icon-192x192.png',
-  'icons/icon-512x512.png'
+  'icons/icon-192.png',
+  'icons/icon-512.png'
 ];
 
-// --- انسٹالیشن کا مرحلہ ---
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Cache opened, adding core assets.');
-        return cache.addAll(urlsToCache);
-      })
-      .then(() => self.skipWaiting())
+// انسٹال ایونٹ: سروس ورکر انسٹال ہوتے وقت ان فائلوں کو کیش کرتا ہے
+self.addEventListener('install', evt => {
+  evt.waitUntil(
+    caches.open(staticCacheName).then(cache => {
+      console.log('caching shell assets for paper app');
+      return cache.addAll(assets);
+    })
   );
 });
 
-// --- ایکٹیویشن کا مرحلہ ---
-// پرانے کیشے کو صاف کرتا ہے
-self.addEventListener('activate', event => {
-  const cacheWhitelist = [CACHE_NAME];
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
+// ایکٹیویٹ ایونٹ: پرانے کیش کو صاف کرتا ہے
+self.addEventListener('activate', evt => {
+  evt.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(keys
+        .filter(key => key !== staticCacheName)
+        .map(key => caches.delete(key))
       );
-    }).then(() => self.clients.claim())
+    })
   );
 });
 
-// --- فیچ (Fetch) کا مرحلہ (Cache First حکمت عملی) ---
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    // پہلے کیشے میں تلاش کریں
-    caches.match(event.request)
-      .then(cachedResponse => {
-        // اگر کیشے میں ہے تو اسے واپس کریں
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        // اگر کیشے میں نہیں ہے، تو نیٹ ورک پر جائیں
-        return fetch(event.request);
-        // چونکہ آپ کی ایپ میں کوئی متحرک مواد نہیں ہے،
-        // اس لیے نیٹ ورک سے آئی چیزوں کو دوبارہ کیشے کرنے کی ضرورت نہیں ہے۔
-        // یہ کوڈ کو سادہ اور تیز رکھتا ہے۔
-      })
+// فیچ ایونٹ: آف لائن ہونے پر کیش سے جواب دیتا ہے
+self.addEventListener('fetch', evt => {
+  evt.respondWith(
+    caches.match(evt.request).then(cacheRes => {
+      // اگر فائل کیش میں ہے تو وہیں سے دے دو، ورنہ انٹرنیٹ سے لانے کی کوشش کرو
+      return cacheRes || fetch(evt.request);
+    })
   );
 });
