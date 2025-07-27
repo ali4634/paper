@@ -1,10 +1,10 @@
- {
+{
   "name": "پیپر مارکنگ ایپ",
   "short_name": "مارکنگ ایپ",
   "start_url": "/paper/",
   "display": "standalone",
   "background_color": "#f4f7f6",
-  "theme_color": "#006400",
+  "theme_color": "#3a3a3a",
   "orientation": "any",
   "scope": "/paper/",
   "icons": [
