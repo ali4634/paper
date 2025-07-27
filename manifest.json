@@ -1,7 +1,6 @@
  {
   "name": "پیپر مارکنگ ایپ",
   "short_name": "پیپر ایپ",
-  "description": "اساتذہ کے لیے پیپر مارکنگ اور رزلٹ بنانے کی ایپ",
   "start_url": "/paper/",
   "display": "standalone",
   "background_color": "#212121",
