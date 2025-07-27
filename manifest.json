@@ -1,7 +1,7 @@
-{
+ {
   "name": "Paper App",
   "short_name": "Paper",
-  "start_url": "index.html",
+  "start_url": "/paper/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
