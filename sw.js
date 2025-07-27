@@ -1,13 +1,13 @@
-// کیش کا نیا ورژن تاکہ براؤزر اسے اپ ڈیٹ کرے
-const staticCacheName = 'paper-static-v2';
+ const staticCacheName = 'paper-app-static-v1';
 
-// آپ کی GitHub Pages ریپوزٹری کے لیے درست اور مکمل پاتھ
+// آپ کی تمام ضروری فائلیں
 const assets = [
   '/paper/',
   '/paper/index.html',
   '/paper/manifest.json',
   '/paper/icons/icon-192.png',
-  '/paper/icons/icon-512.png'
+  '/paper/icons/icon-512.png',
+  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js'
 ];
 
 // انسٹال ایونٹ
@@ -32,11 +32,11 @@ self.addEventListener('activate', evt => {
   );
 });
 
-// فیچ ایونٹ (یہ اب ریفریش کو بھی ہینڈل کرے گا)
+// فیچ ایونٹ
 self.addEventListener('fetch', evt => {
   evt.respondWith(
     caches.match(evt.request).then(cacheRes => {
       return cacheRes || fetch(evt.request);
     })
   );
-});
+});۔
