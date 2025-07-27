@@ -1,16 +1,16 @@
-// کیش کا نیا اور صاف ورژن
-const staticCacheName = 'paper-static-v1';
+// کیش کا نیا ورژن تاکہ براؤزر اسے اپ ڈیٹ کرے
+const staticCacheName = 'paper-static-v2';
 
-// صرف وہ فائلیں جو آپ کی ریپوزٹری میں حقیقت میں موجود ہیں
+// آپ کی GitHub Pages ریپوزٹری کے لیے درست اور مکمل پاتھ
 const assets = [
-  '/',
-  'index.html',
-  'manifest.json',
-  'icons/icon-192.png',
-  'icons/icon-512.png'
+  '/paper/',
+  '/paper/index.html',
+  '/paper/manifest.json',
+  '/paper/icons/icon-192.png',
+  '/paper/icons/icon-512.png'
 ];
 
-// انسٹال ایونٹ: سروس ورکر انسٹال ہوتے وقت ان فائلوں کو کیش کرتا ہے
+// انسٹال ایونٹ
 self.addEventListener('install', evt => {
   evt.waitUntil(
     caches.open(staticCacheName).then(cache => {
@@ -20,7 +20,7 @@ self.addEventListener('install', evt => {
   );
 });
 
-// ایکٹیویٹ ایونٹ: پرانے کیش کو صاف کرتا ہے
+// ایکٹیویٹ ایونٹ
 self.addEventListener('activate', evt => {
   evt.waitUntil(
     caches.keys().then(keys => {
@@ -32,11 +32,10 @@ self.addEventListener('activate', evt => {
   );
 });
 
-// فیچ ایونٹ: آف لائن ہونے پر کیش سے جواب دیتا ہے
+// فیچ ایونٹ (یہ اب ریفریش کو بھی ہینڈل کرے گا)
 self.addEventListener('fetch', evt => {
   evt.respondWith(
     caches.match(evt.request).then(cacheRes => {
-      // اگر فائل کیش میں ہے تو وہیں سے دے دو، ورنہ انٹرنیٹ سے لانے کی کوشش کرو
       return cacheRes || fetch(evt.request);
     })
   );
