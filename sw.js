@@ -1,5 +1,7 @@
-const staticCacheName = 'paper-marking-app-v1'; // نیا ورژن
+// پیپر ایپ کے لیے کیش کا نیا نام اور ورژن
+const staticCacheName = 'paper-app-static-v4'; // ورژن بدل دیا ہے
 
+// آپ کی paper ریپوزٹری کی تمام ضروری فائلیں (بیرونی اسکرپٹ کے ساتھ)
 const assets = [
   '/paper/',
   '/paper/index.html',
@@ -9,17 +11,17 @@ const assets = [
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js'
 ];
 
-// انسٹال ایونٹ
+// انسٹال ایونٹ: سروس ورکر انسٹال ہوتے وقت ان فائلوں کو کیش کرتا ہے
 self.addEventListener('install', evt => {
   evt.waitUntil(
     caches.open(staticCacheName).then(cache => {
-      console.log('caching shell assets');
+      console.log('caching assets for paper app');
       return cache.addAll(assets);
     })
   );
 });
 
-// ایکٹیویٹ ایونٹ
+// ایکٹیویٹ ایونٹ: پرانے کیش کو صاف کرتا ہے
 self.addEventListener('activate', evt => {
   evt.waitUntil(
     caches.keys().then(keys => {
@@ -31,10 +33,11 @@ self.addEventListener('activate', evt => {
   );
 });
 
-// فیچ ایونٹ
+// فیچ ایونٹ: آف لائن ہونے پر کیش سے جواب دیتا ہے
 self.addEventListener('fetch', evt => {
   evt.respondWith(
     caches.match(evt.request).then(cacheRes => {
+      // اگر فائل کیش میں ہے تو وہیں سے دے دو، ورنہ انٹرنیٹ سے لانے کی کوشش کرو
       return cacheRes || fetch(evt.request);
     })
   );
