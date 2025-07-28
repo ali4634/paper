@@ -6,8 +6,8 @@ const URLS_TO_CACHE = [
   REPO_NAME,
   REPO_NAME + 'index.html',
   REPO_NAME + 'manifest.json',
-  REPO_NAME + 'icons/icon-192.png',  // <-- icons کا فولڈر شامل کیا
-  REPO_NAME + 'icons/icon-512.png',  // <-- icons کا فولڈر شامل کیا
+  REPO_NAME + 'icons/icon-192×192.png',  // <-- icons کا فولڈر شامل کیا
+  REPO_NAME + 'icons/icon-512×512.png',  // <-- icons کا فولڈر شامل کیا
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js'
 ];
 
