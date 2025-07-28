@@ -9,12 +9,12 @@
   "scope": "/paper/",
   "icons": [
     {
-      "src": "/paper/icons/icon-192.png",
+      "src": "/paper/icons/icon-192×192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/paper/icons/icon-512.png",
+      "src": "/paper/icons/icon-512×192.png",
       "type": "image/png",
       "sizes": "512x512"
     }
